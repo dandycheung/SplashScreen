@@ -3,26 +3,21 @@ package com.example.splash.activity
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Application
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.graphics.Path
-import android.os.*
+import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateInterpolator
-import android.window.SplashScreenView
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.splashscreen.SplashScreenViewProvider
 import com.example.splash.R
 import com.example.splash.databinding.ActivityMainSimpleBinding
-import com.example.splash.databinding.ActivitySplashBinding
-import com.example.splash.observer.MyLifecycleObserver
 import com.example.splash.viewmodel.MyViewModel
-import java.time.Instant
 
 class JetpackSplashActivity : AppCompatActivity() {
     private val viewModel: MyViewModel by viewModels()
@@ -52,7 +47,7 @@ class JetpackSplashActivity : AppCompatActivity() {
     // Keep splash screen showing till data initialized.
     private fun keepSplashScreenLonger(splashScreen: SplashScreen) {
         Log.d("Splash", "SplashActivity#keepSplashScreenLonger()")
-        splashScreen.setKeepVisibleCondition { !viewModel.isDataReady() }
+        splashScreen.setKeepOnScreenCondition { !viewModel.isDataReady() }
     }
 
     // Customize splash screen exit animator.
