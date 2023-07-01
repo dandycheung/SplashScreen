@@ -8,6 +8,8 @@ class MyViewModel(application: Application): AndroidViewModel(application) {
     companion object {
         const val WORK_DURATION = 2000L
     }
+
     private val initTime = SystemClock.uptimeMillis()
+
     fun isDataReady() = SystemClock.uptimeMillis() - initTime > WORK_DURATION
 }

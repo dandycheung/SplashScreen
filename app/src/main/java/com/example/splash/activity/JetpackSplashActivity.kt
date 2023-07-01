@@ -30,7 +30,7 @@ class JetpackSplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Need to be called before setContentView or other view operation on the root view.
+        // Need to be called before setContentView or other view operation on the root view
         splashScreen = installSplashScreen()
 
         val binding = ActivityMainSimpleBinding.inflate(layoutInflater)
@@ -44,13 +44,13 @@ class JetpackSplashActivity : AppCompatActivity() {
         customizeSplashScreenExit(splashScreen)
     }
 
-    // Keep splash screen showing till data initialized.
+    // Keep splash screen showing till data initialized
     private fun keepSplashScreenLonger(splashScreen: SplashScreen) {
         Log.d("Splash", "SplashActivity#keepSplashScreenLonger()")
         splashScreen.setKeepOnScreenCondition { !viewModel.isDataReady() }
     }
 
-    // Customize splash screen exit animator.
+    // Customize splash screen exit animator
     private fun customizeSplashScreenExit(splashScreen: SplashScreen) {
         splashScreen.setOnExitAnimationListener { splashScreenViewProvider ->
             Log.d(
@@ -67,9 +67,9 @@ class JetpackSplashActivity : AppCompatActivity() {
 
             // hookViewLayout(splashScreenViewProvider)
 
-             showSplashExitAnimator(splashScreenViewProvider.view) {
-                 splashScreenViewProvider.remove()
-             }
+            showSplashExitAnimator(splashScreenViewProvider.view) {
+                splashScreenViewProvider.remove()
+            }
 
             showSplashIconExitAnimator(splashScreenViewProvider.iconView) {
                 splashScreenViewProvider.remove()
@@ -77,13 +77,13 @@ class JetpackSplashActivity : AppCompatActivity() {
         }
     }
 
-    // Show exit animator for splash screen view.
+    // Show exit animator for splash screen view
     private fun showSplashExitAnimator(splashScreenView: View, onExit: () -> Unit = {}) {
         Log.d("Splash", "showSplashExitAnimator() splashScreenView:$splashScreenView" +
                 " context:${splashScreenView.context}" +
                 " parent:${splashScreenView.parent}")
 
-        // Create your custom animation set.
+        // Create your custom animation set
         val alphaOut = ObjectAnimator.ofFloat(
             splashScreenView,
             View.ALPHA,
@@ -91,7 +91,7 @@ class JetpackSplashActivity : AppCompatActivity() {
             0f
         )
 
-        // Slide up to center.
+        // Slide up to center
         val slideUp = ObjectAnimator.ofFloat(
             splashScreenView,
             View.TRANSLATION_Y,
@@ -104,7 +104,7 @@ class JetpackSplashActivity : AppCompatActivity() {
             }
         }
 
-        // Slide down to center.
+        // Slide down to center
         val slideDown = ObjectAnimator.ofFloat(
             splashScreenView,
             View.TRANSLATION_Y,
@@ -149,7 +149,7 @@ class JetpackSplashActivity : AppCompatActivity() {
         }
     }
 
-    // Show exit animator for splash icon.
+    // Show exit animator for splash icon
     private fun showSplashIconExitAnimator(iconView: View, onExit: () -> Unit = {}) {
         Log.d("Splash", "showSplashIconExitAnimator()" +
                 " iconView[:${iconView.width}, ${iconView.height}]" +
@@ -162,7 +162,7 @@ class JetpackSplashActivity : AppCompatActivity() {
             0f
         )
 
-        // Bird scale out animator.
+        // Bird scale out animator
         val scaleOut = ObjectAnimator.ofFloat(
             iconView,
             View.SCALE_X,
@@ -173,7 +173,7 @@ class JetpackSplashActivity : AppCompatActivity() {
             }
         )
 
-        // Bird slide up to center.
+        // Bird slide up to center
         val slideUp = ObjectAnimator.ofFloat(
             iconView,
             View.TRANSLATION_Y,
@@ -217,13 +217,13 @@ class JetpackSplashActivity : AppCompatActivity() {
     }
 
     private fun getRemainingDuration(splashScreenView: SplashScreenViewProvider): Long {
-        // Get the duration of the animated vector drawable.
+        // Get the duration of the animated vector drawable
         val animationDuration = splashScreenView.iconAnimationDurationMillis
 
-        // Get the start time of the animation.
+        // Get the start time of the animation
         val animationStart = splashScreenView.iconAnimationStartMillis
 
-        // Calculate the remaining duration of the animation.
+        // Calculate the remaining duration of the animation
         return if (animationDuration == 0L || animationStart == 0L)
             defaultExitDuration
         else (animationDuration - SystemClock.uptimeMillis() + animationStart)

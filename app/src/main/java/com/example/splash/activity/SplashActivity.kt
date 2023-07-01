@@ -5,8 +5,6 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.graphics.Path
-import android.graphics.RenderEffect
-import android.graphics.Shader
 import android.os.*
 import android.util.Log
 import android.view.View
@@ -21,17 +19,18 @@ import com.example.splash.R
 import com.example.splash.databinding.ActivitySplashBinding
 import com.example.splash.observer.MyLifecycleObserver
 import com.example.splash.viewmodel.MyViewModel
-import java.lang.Exception
 import java.time.Instant
 
 class SplashActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private val viewModel: MyViewModel by viewModels()
     private val jumpRunnable = { goToMainScreen() }
-//    {
-//        Log.d("Splash", "goToMainScreen delayed")
-//        goToMainScreen()
-//    }
+    /*
+    {
+        Log.d("Splash", "goToMainScreen delayed")
+        goToMainScreen()
+    }
+    // */
 
     @RequiresApi(31)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,19 +39,19 @@ class SplashActivity : AppCompatActivity() {
         val binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        MyLifecycleObserver(lifecycle, this).also { lifecycle.addObserver(it) }
+        MyLifecycleObserver(this).also { lifecycle.addObserver(it) }
 
         // keepSplashScreenLonger()
         customizeSplashScreenExit()
     }
 
-    // Ensure main screen not shown when tap home key during message queueing.
+    // Ensure main screen not shown when tap home key during message queueing
     override fun onPause() {
         super.onPause()
         handler.removeCallbacksAndMessages(null)
     }
 
-    // Ensure main screen jump logic can do again.
+    // Ensure main screen jump logic can do again
     override fun onResume() {
         super.onResume()
         goToMainScreenDelayed()
@@ -70,10 +69,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun goToMainScreen() {
-        Intent(
-            this,
-            MainActivity::class.java
-        ).also { startActivity(it) }
+        Intent(this, MainActivity::class.java).also { startActivity(it) }
         finish()
     }
 
@@ -82,13 +78,13 @@ class SplashActivity : AppCompatActivity() {
      */
     private fun keepSplashScreenLonger() {
         Log.d("Splash", "SplashActivity#keepSplashScreenLonger()")
-        // 监听Content View的描画时机
+        // 监听 Content View 的绘制时机
         val content: View = findViewById(android.R.id.content)
         content.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     Log.d("Splash", "SplashActivity#onPreDraw() currentTime:${SystemClock.uptimeMillis()}")
-                    // 准备好了描画放行，反之挂起
+                    // 准备好了绘制放行，反之挂起
                     return if (viewModel.isDataReady()) {
                         Log.d("Splash", "SplashActivity#onPreDraw() proceed")
                         content.viewTreeObserver.removeOnPreDrawListener(this)
@@ -103,14 +99,13 @@ class SplashActivity : AppCompatActivity() {
     }
 
     /*
-    Customize splash screen exit animator.
+     Customize splash screen exit animator
      */
     @RequiresApi(31)
     private fun customizeSplashScreenExit() {
-        // Ensure working on S device or above .
-        if (!BuildCompat.isAtLeastS()) {
+        // Ensure working on S device or above
+        if (!BuildCompat.isAtLeastS())
             return
-        }
 
         splashScreen.setOnExitAnimationListener { splashScreenView ->
             Log.d(
@@ -120,49 +115,54 @@ class SplashActivity : AppCompatActivity() {
             )
 
             // Exit immediately
-//            Log.d("Splash", "SplashScreen#remove directly")
-//            splashScreenView.remove()
+            // Log.d("Splash", "SplashScreen#remove directly")
+            // splashScreenView.remove()
 
             // Standard exit animator
-//            sleep(1000)
-//            Log.d("Splash", "SplashScreen#remove after sleeping")
-//            splashScreenView.remove()
+            // sleep(1000)
+            // Log.d("Splash", "SplashScreen#remove after sleeping")
+            // splashScreenView.remove()
 
             // Customize exit animator
-//            showSplashExitAnimator(splashScreenView)
+            // showSplashExitAnimator(splashScreenView)
             showSplashIconExitAnimator(splashScreenView)
         }
     }
 
     /*
-    Show exit animator for splash screen view.
+     Show exit animator for splash screen view
      */
     @RequiresApi(31)
     private fun showSplashExitAnimator(splashScreenView: SplashScreenView) {
-        // Single slide up animator.
-//        val slideUp = ObjectAnimator.ofFloat(
-//            splashScreenView,
-//            View.TRANSLATION_Y,
-//            0f,
-//            -splashScreenView.height.toFloat()
-//        )
-//            slideUp.interpolator = AnticipateInterpolator()
-//            slideUp.duration = 1000L
-//            // Call SplashScreenView.remove at the end of your custom animation.
-//            slideUp.doOnEnd {
-//                Log.d("Splash", "SplashScreen#onSplashScreenExit onEnd remove")
-//                splashScreenView.remove()
-//            }
-//            // Run your animation.
-//            slideUp.start()
-
-        // Create your custom animation set.
+        // Single slide up animator
+        /*
         val slideUp = ObjectAnimator.ofFloat(
             splashScreenView,
             View.TRANSLATION_Y,
             0f,
             -splashScreenView.height.toFloat()
         )
+        slideUp.interpolator = AnticipateInterpolator()
+        slideUp.duration = 1000L
+
+        // Call SplashScreenView.remove at the end of your custom animation
+        slideUp.doOnEnd {
+            Log.d("Splash", "SplashScreen#onSplashScreenExit onEnd remove")
+            splashScreenView.remove()
+        }
+
+        // Run your animation
+        slideUp.start()
+        // */
+
+        // Create your custom animation set
+        val slideUp = ObjectAnimator.ofFloat(
+            splashScreenView,
+            View.TRANSLATION_Y,
+            0f,
+            -splashScreenView.height.toFloat()
+        )
+
         val slideLeft = ObjectAnimator.ofFloat(
             splashScreenView,
             View.TRANSLATION_X,
@@ -199,12 +199,12 @@ class SplashActivity : AppCompatActivity() {
         animatorSet.interpolator = AnticipateInterpolator()
 
         animatorSet.playTogether(scaleOut)
-//        animatorSet.playTogether(slideUp)
-//        animatorSet.playTogether(slideUp, scaleXOut)
-//        animatorSet.playTogether(slideUp, scaleOut)
-//        animatorSet.playTogether(slideUp, slideLeft)
-//        animatorSet.playTogether(slideUp, slideLeft, scaleOut)
-//        animatorSet.playTogether(slideUp, slideLeft, scaleOut, alphaOut)
+        // animatorSet.playTogether(slideUp)
+        // animatorSet.playTogether(slideUp, scaleXOut)
+        // animatorSet.playTogether(slideUp, scaleOut)
+        // animatorSet.playTogether(slideUp, slideLeft)
+        // animatorSet.playTogether(slideUp, slideLeft, scaleOut)
+        // animatorSet.playTogether(slideUp, slideLeft, scaleOut, alphaOut)
 
         animatorSet.doOnEnd {
             Log.d("Splash", "SplashScreen#remove when animator done")
@@ -215,7 +215,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     /*
-    Show exit animator for splash icon.
+     Show exit animator for splash icon
      */
     @RequiresApi(31)
     private fun showSplashIconExitAnimator(splashScreenView: SplashScreenView) {
@@ -226,7 +226,7 @@ class SplashActivity : AppCompatActivity() {
             View.TRANSLATION_Y,
             0f,
             -iconView.height * 2.toFloat()
-//            -iconView.height.toFloat()
+            // -iconView.height.toFloat()
         )
         slideUp.interpolator = AnticipateInterpolator()
         slideUp.duration = resources.getInteger(R.integer.splash_exit_icon_duration).toLong()
@@ -242,15 +242,15 @@ class SplashActivity : AppCompatActivity() {
     }
 
     /*
-    Calculate remaining duration for splash screen exit animator.
+     Calculate remaining duration for splash screen exit animator
      */
     @RequiresApi(31)
     private fun getRemainingDuration(splashScreenView: SplashScreenView): Long {
-        // Get the duration of the animated vector drawable.
+        // Get the duration of the animated vector drawable
         // val animationDuration = splashScreenView.iconAnimationDurationMillis
         val animationDuration = splashScreenView.iconAnimationDuration?.toMillis()
 
-        // Get the start time of the animation.
+        // Get the start time of the animation
         // val animationStart = splashScreenView.iconAnimationStartMillis
         val animationStart = splashScreenView.iconAnimationStart?.toEpochMilli()
 
@@ -263,7 +263,7 @@ class SplashActivity : AppCompatActivity() {
                     " current:${SystemClock.uptimeMillis()}"
         )
 
-        // Calculate the remaining duration of the animation.
+        // Calculate the remaining duration of the animation
         return if (animationDuration != null && animationStart != null) {
             (animationDuration - SystemClock.uptimeMillis() + animationStart)
                 .coerceAtLeast(0L)
@@ -271,20 +271,22 @@ class SplashActivity : AppCompatActivity() {
             0L
         }
 
-//        // Calculate the remaining duration of the animation.
-//        var remainingDuration = if (animationDuration != null && animationStart != null) {
-//            // (animationDuration - Duration.between(animationStart, Instant.now()))
-//            // (animationDuration - ChronoUnit.MICROS.between(Instant.ofEpochMilli(animationStart * 1000), Instant.now()))
-//            (animationDuration - SystemClock.uptimeMillis() + animationStart)
-//            // .coerceAtLeast(0L)
-//        } else {
-//            0L
-//        }
-//
-//        Log.d("Splash", "SplashScreen#getRemainingDuration() remainingDuration:$remainingDuration")
-//        remainingDuration = remainingDuration.coerceAtLeast(0L)
-//
-//        Log.d("Splash", "SplashScreen#getRemainingDuration() 2 remainingDuration:$remainingDuration")
-//        return remainingDuration
+        // Calculate the remaining duration of the animation
+        /*
+        var remainingDuration = if (animationDuration != null && animationStart != null) {
+            // (animationDuration - Duration.between(animationStart, Instant.now()))
+            // (animationDuration - ChronoUnit.MICROS.between(Instant.ofEpochMilli(animationStart * 1000), Instant.now()))
+            (animationDuration - SystemClock.uptimeMillis() + animationStart)
+            // .coerceAtLeast(0L)
+        } else {
+            0L
+        }
+
+        Log.d("Splash", "SplashScreen#getRemainingDuration() remainingDuration:$remainingDuration")
+        remainingDuration = remainingDuration.coerceAtLeast(0L)
+
+        Log.d("Splash", "SplashScreen#getRemainingDuration() 2 remainingDuration:$remainingDuration")
+        return remainingDuration
+        // */
     }
 }

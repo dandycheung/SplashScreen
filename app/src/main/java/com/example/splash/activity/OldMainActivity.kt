@@ -1,22 +1,13 @@
 package com.example.splash.activity
 
-import android.graphics.*
-import android.graphics.drawable.Animatable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
-import android.view.Window
-import android.view.WindowManager
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
-import androidx.core.os.BuildCompat
-import com.example.splash.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
 import com.example.splash.databinding.ActivityMainSimpleBinding
-import com.example.splash.observer.MyLifecycleObserver
 import com.example.splash.viewmodel.MyViewModel
 
 class OldMainActivity : AppCompatActivity() {
@@ -27,7 +18,7 @@ class OldMainActivity : AppCompatActivity() {
         val binding = ActivityMainSimpleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Test for hard work to keep splash screen longer.
+        // Test for hard work to keep splash screen longer
         // doSomeHardWork()
     }
 

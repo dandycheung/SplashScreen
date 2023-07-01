@@ -18,14 +18,14 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(31)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MyLifecycleObserver(lifecycle, this).also { lifecycle.addObserver(it) }
+        MyLifecycleObserver(this).also { lifecycle.addObserver(it) }
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         playKotlinAnimation(binding)
 
-        // Todo show blur effect.
+        // TODO: show blur effect
         // showViewRenderEffect(binding.iv)
         // listenBlurStatus()
         // showDialog()
@@ -38,10 +38,9 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(31)
     private fun showViewRenderEffect(view: View) {
-        // Ensure working on S device or above .
-        if (!BuildCompat.isAtLeastS()) {
+        // Ensure working on S device or above
+        if (!BuildCompat.isAtLeastS())
             return
-        }
 
         val radiusX = 13f
         val radiusY = 14f
@@ -56,10 +55,9 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(31)
     private fun listenBlurStatus() {
-        // Ensure working on S device or above .
-        if (!BuildCompat.isAtLeastS()) {
+        // Ensure working on S device or above
+        if (!BuildCompat.isAtLeastS())
             return
-        }
 
         val windowManager = getSystemService(WindowManager::class.java)
         windowManager.addCrossWindowBlurEnabledListener { result ->
@@ -86,13 +84,12 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(31)
     private fun showWindowRenderEffect(window: Window?) {
-        // Ensure working on S device or above .
-        if (!BuildCompat.isAtLeastS()) {
+        // Ensure working on S device or above
+        if (!BuildCompat.isAtLeastS())
             return
-        }
 
         Log.d("Blur", "showWindowRenderEffect window:$window")
-        // Todo
+        // TODO:
         window?.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
         window?.setBackgroundBlurRadius(30)
     }

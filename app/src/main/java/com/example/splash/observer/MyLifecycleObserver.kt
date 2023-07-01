@@ -1,43 +1,32 @@
 package com.example.splash.observer
 
 import android.app.Activity
-import android.os.Bundle
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 
-class MyLifecycleObserver(
-    private val lifecycle: Lifecycle,
-    private val activity: Activity
-) : LifecycleObserver {
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onCreate() {
+class MyLifecycleObserver(private val activity: Activity) : DefaultLifecycleObserver {
+    override fun onCreate(owner: LifecycleOwner) {
         Log.d("Splash", "Activity:$activity Activity:$activity onCreate")
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onStart() {
+    override fun onStart(owner: LifecycleOwner) {
         Log.d("Splash", "Activity:$activity onStart")
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun onResume() {
+    override fun onResume(owner: LifecycleOwner) {
         Log.d("Splash", "Activity:$activity onResume")
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun onPause() {
+    override fun onPause(owner: LifecycleOwner) {
         Log.d("Splash", "Activity:$activity onPause")
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onStop() {
+    override fun onStop(owner: LifecycleOwner) {
         Log.d("Splash", "Activity:$activity onStop")
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun onDestory() {
-        Log.d("Splash", "Activity:$activity onDestory")
+    override fun onDestroy(owner: LifecycleOwner) {
+        Log.d("Splash", "Activity:$activity onDestroy")
     }
 }

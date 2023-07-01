@@ -37,10 +37,7 @@ class CustomizeSplashActivity : AppCompatActivity() {
     }
 
     private fun goToMainScreen() {
-        Intent(
-            this,
-            OldMainActivity::class.java
-        ).also {
+        Intent(this, OldMainActivity::class.java).also {
             startActivity(it)
             finish()
         }
